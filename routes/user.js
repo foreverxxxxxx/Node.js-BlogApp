@@ -12,7 +12,8 @@ router.use("/blogs/category/:categoryid", async function(req, res) {
         res.render("users/blogs", {
             title: "Tüm Kurslar",
             blogs: blogs,
-            categories: categories
+            categories: categories,
+            selectedCategory: id
         })
     }
     catch(err) {
@@ -48,7 +49,8 @@ router.use("/blogs", async function(req, res) {
         res.render("users/blogs", {
             title: "Tüm Kurslar",
             blogs: blogs,
-            categories: categories
+            categories: categories,
+            selectedCategory: null
         })
     }
     catch(err) {
@@ -64,7 +66,8 @@ router.use("/", async function(req, res) {
         res.render("users/index", {
             title: "Popüler Kurslar",
             blogs: blogs,
-            categories: categories
+            categories: categories,
+            selectedCategory: null
         })
     }
     catch(err) {
