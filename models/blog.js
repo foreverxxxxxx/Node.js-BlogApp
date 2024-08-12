@@ -39,11 +39,36 @@ const Blog = sequelize.define("blog", {
 });
 
 async function sync() {
-    await Blog.sync({ force: true });
+    await Blog.sync({force: true});
     console.log("blog tablosu eklendi");
-}
 
-// migrations
+    const count =await Blog.count();
+    if(count==0){
+         await Blog.create({
+     baslik:"Komple Uygulamalı Web Geliştirme Eğitimi",
+     altbaslik:"HTML,CSS,ASP.Net",
+     aciklama:"Komple bir site tasarımı",
+     resim:"1.jpeg",
+     anasayfa:true,
+     onay:true,
+     categoryid:1
+  });
+
+    await Blog.create({
+     baslik:"Python Uygulamalı Web Geliştirme Eğitimi",
+     altbaslik:"Python dersleri",
+     aciklama:"En kolay yazılımı",
+     resim:"2.jpeg",
+     anasayfa:true,
+     onay:true,
+     categoryid:2
+  });
+}
+    }
+
+   
+
+
 
 sync();
 
