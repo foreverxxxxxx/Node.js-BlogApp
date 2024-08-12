@@ -43,7 +43,7 @@ async function sync() {
     console.log("blog tablosu eklendi");
 }
 
-// migrations
+
 
 sync();
 
