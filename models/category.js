@@ -19,6 +19,12 @@ const Category = sequelize.define("category", {
 async function sync() {
     await Category.sync({ force: true });
     console.log("category tablosu eklendi");
+
+    const c1=Category.build({ 
+        name:"Web Geliştirme"
+    });
+   await c1.save();
+    console.log("kategori eklendi ");
 }
 
 sync();
