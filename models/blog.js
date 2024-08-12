@@ -35,11 +35,16 @@ const Blog = sequelize.define("blog", {
     categoryid: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
-    eklenmeTarihi: {
-        type: DataTypes.DATETIME,
-        defaultValue: DataTypes.NOW
     }
 });
+
+async function sync() {
+    await Blog.sync({ force: true });
+    console.log("blog tablosu eklendi");
+}
+
+// migrations
+
+sync();
 
 module.exports = Blog;
