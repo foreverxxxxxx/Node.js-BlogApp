@@ -67,10 +67,11 @@ router.post("/category/delete/:categoryid", async function(req, res) {
 router.get("/blog/create", async function(req, res) {
     try {
         // const [categories, ] = await db.execute("select * from category");
+         const categories=await Category.findAll();
 
         res.render("admin/blog-create", {
             title: "add blog",
-            // categories: categories
+            categories: categories
         });
     }
     catch(err) {
@@ -215,7 +216,9 @@ router.post("/categories/:categoryid", async function(req, res) {
 
 router.get("/blogs", async function(req, res) {
     try {
-        const [blogs,] = await db.execute("select blogid, baslik, altbaslik, resim from blog");
+        // const [blogs,] = await db.execute("select blogid, baslik, altbaslik, resim from blog");
+        const blogs=await Blog.findAll({attributes:["blogid","baslik","altbaslik","resim"]});
+        console.log(blogs);
         res.render("admin/blog-list", {
             title: "blog list",
             blogs: blogs,
@@ -230,7 +233,8 @@ router.get("/blogs", async function(req, res) {
 
 router.get("/categories", async function(req, res) {
     try {
-        const [categories,] = await db.execute("select * from category");
+        const categories = await Category.findAll();
+     
         res.render("admin/category-list", {
             title: "blog list",
             categories: categories,
