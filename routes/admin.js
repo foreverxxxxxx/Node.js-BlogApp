@@ -183,13 +183,19 @@ router.get("/categories/:categoryid", async function(req, res) {
     const categoryid = req.params.categoryid;
 
     try {
-        const [categories, ] = await db.execute("select * from category where categoryid=?", [categoryid]);
-        const category = categories[0];
+        // const [categories, ] = await db.execute("select * from category where categoryid=?", [categoryid]);
+        // const category = await Category.findAll({
+        //     where:{
+        //         categoryid: categoryid
+        //     }
+        // });
 
+        const category= await Category.findByPk(categoryid);
+  
         if(category) {
             return res.render("admin/category-edit", {
-                title: category.name,
-                category: category
+                title: category.dataValues.name,
+                category: category.dataValues
             });
         }
 
