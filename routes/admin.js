@@ -131,14 +131,14 @@ router.get("/blogs/:blogid", async function(req, res) {
     const blogid = req.params.blogid;
 
     try {
-        const [blogs, ] = await db.execute("select * from blog where blogid=?", [blogid]);
-        const [categories, ] = await db.execute("select * from category");
-        const blog = blogs[0];
+        const blog= await Blog.findByPk(blogid); 
+        const categories = await Category.findAll();
+      //  const blog = blogs[0];
 
         if(blog) {
             return res.render("admin/blog-edit", {
-                title: blog.baslik,
-                blog: blog,
+                title: blog.dataValues.baslik,
+                blog: blog.dataValues,
                 categories: categories
             });
         }
