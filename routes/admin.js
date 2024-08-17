@@ -66,8 +66,7 @@ router.post("/category/delete/:categoryid", async function(req, res) {
 
 router.get("/blog/create", async function(req, res) {
     try {
-        // const [categories, ] = await db.execute("select * from category");
-         const categories=await Category.findAll();
+        const categories = await Category.findAll();
 
         res.render("admin/blog-create", {
             title: "add blog",
@@ -131,9 +130,8 @@ router.get("/blogs/:blogid", async function(req, res) {
     const blogid = req.params.blogid;
 
     try {
-        const blog= await Blog.findByPk(blogid); 
+        const blog = await Blog.findByPk(blogid);
         const categories = await Category.findAll();
-      //  const blog = blogs[0];
 
         if(blog) {
             return res.render("admin/blog-edit", {
@@ -170,28 +168,34 @@ router.post("/blogs/:blogid", imageUpload.upload.single("resim"), async function
     const kategoriid = req.body.kategori;
 
     try {
-        await db.execute("UPDATE blog SET baslik=?,altbaslik=?, aciklama=?, resim=?, anasayfa=?, onay=?, categoryid=? WHERE blogid=?", [baslik,altbaslik,aciklama, resim,anasayfa,onay,kategoriid, blogid]);
-        res.redirect("/admin/blogs?action=edit&blogid=" + blogid);
+        const blog =await Blog.findByPk(blogid);
+        if(blog){
+            blog.baslik=baslik;
+            blog.altbaslik=altbaslik;
+            blog.aciklama=aciklama;
+            blog.resim=resim;
+            blog.anasayfa=anasayfa;
+            blog.onay=onay;
+            blog.categoryid=kategoriid;
+            
+            await blog.save();
+            return  res.redirect("/admin/blogs?action=edit&blogid=" + blogid);
+        }
+        res.redirect("/admin/blogs");
+       // await db.execute("UPDATE blog SET baslik=?,altbaslik=?, aciklama=?, resim=?, anasayfa=?, onay=?, categoryid=? WHERE blogid=?", [baslik,altbaslik,aciklama, resim,anasayfa,onay,kategoriid, blogid]);
+       
     }
     catch(err) {
         console.log(err);
     }
 });
 
-// categories edit
 router.get("/categories/:categoryid", async function(req, res) {
     const categoryid = req.params.categoryid;
 
     try {
-        // const [categories, ] = await db.execute("select * from category where categoryid=?", [categoryid]);
-        // const category = await Category.findAll({
-        //     where:{
-        //         categoryid: categoryid
-        //     }
-        // });
+        const category = await Category.findByPk(categoryid);
 
-        const category= await Category.findByPk(categoryid);
-  
         if(category) {
             return res.render("admin/category-edit", {
                 title: category.dataValues.name,
@@ -210,11 +214,22 @@ router.post("/categories/:categoryid", async function(req, res) {
     const categoryid = req.body.categoryid;
     const name = req.body.name;
 
-
     try {
-        await db.execute("UPDATE category SET name=? where categoryid=?", [name, categoryid]);
-        res.redirect("/admin/categories?action=edit&categoryid=" + categoryid);
-    }
+        // const category= await Category.findByPk(categoryid);
+        // if(category){
+        //     category.name=name;
+        //     await category.save();
+         
+            await Category.update({name:name},{
+                where:{
+                    categoryid:categoryid
+                }
+            });
+             return res.redirect("/admin/categories?action=edit&categoryid=" + categoryid);
+        }
+       // await db.execute("UPDATE category SET name=? where categoryid=?", [name, categoryid]);
+        // res.redirect("/admin/categories" );
+    
     catch(err) {
         console.log(err);
     }
@@ -223,7 +238,7 @@ router.post("/categories/:categoryid", async function(req, res) {
 router.get("/blogs", async function(req, res) {
     try {
         // const [blogs,] = await db.execute("select blogid, baslik, altbaslik, resim from blog");
-        const blogs=await Blog.findAll({attributes:["blogid","baslik","altbaslik","resim"]});
+        const blogs = await Blog.findAll({ attributes: ["blogid","baslik","altbaslik","resim"] });
         console.log(blogs);
         res.render("admin/blog-list", {
             title: "blog list",
@@ -240,7 +255,7 @@ router.get("/blogs", async function(req, res) {
 router.get("/categories", async function(req, res) {
     try {
         const categories = await Category.findAll();
-     
+
         res.render("admin/category-list", {
             title: "blog list",
             categories: categories,
