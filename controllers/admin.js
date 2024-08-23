@@ -85,7 +85,7 @@ exports.get_blog_create = async function(req, res) {
 exports.post_blog_create = async function(req, res) {
     const baslik = req.body.baslik;
     const altbaslik = req.body.altbaslik;
-    const aciklama = req.body.aciklama;
+    const açıklama = req.body.açıklama;
     const resim = req.file.filename;
     const anasayfa = req.body.anasayfa == "on" ? 1:0;
     const onay = req.body.onay == "on"? 1:0;
@@ -95,7 +95,7 @@ exports.post_blog_create = async function(req, res) {
         await Blog.create({
             baslik: baslik,
             altbaslik: altbaslik,
-            aciklama: aciklama,
+            açıklama: açıklama,
             resim: resim,
             anasayfa: anasayfa,
             onay: onay,
@@ -156,7 +156,7 @@ exports.post_blog_edit = async function(req, res) {
     const blogid = req.body.blogid;
     const baslik = req.body.baslik;
     const altbaslik = req.body.altbaslik;
-    const aciklama = req.body.aciklama;
+    const açıklama = req.body.açıklama;
     let resim = req.body.resim;
 
     if(req.file) {
@@ -176,7 +176,7 @@ exports.post_blog_edit = async function(req, res) {
         if(blog) {
             blog.baslik = baslik;
             blog.altbaslik = altbaslik;
-            blog.aciklama = aciklama;
+            blog.açıklama = açıklama;
             blog.resim = resim;
             blog.anasayfa = anasayfa;
             blog.onay = onay;
@@ -197,11 +197,15 @@ exports.get_category_edit = async function(req, res) {
 
     try {
         const category = await Category.findByPk(categoryid);
+        const blogs = await category.getBlogs();
+        const countBlog = await category.countBlogs();
 
         if(category) {
             return res.render("admin/category-edit", {
                 title: category.dataValues.name,
-                category: category.dataValues
+                category: category.dataValues,
+                blogs: blogs,
+                countBlog: countBlog
             });
         }
 
