@@ -23,9 +23,11 @@ const Blog = require("./models/blog");
 Category.hasMany(Blog, {
     foreignKey: {
         name: 'categoryId',
-        allowNull: false,
+        allowNull: true,
         // defaultValue: 1
-    }
+    },
+    onDelete:"SET NULL",
+    onUpdate:"SET NULL",
 });
 Blog.belongsTo(Category);
 
@@ -33,7 +35,7 @@ Blog.belongsTo(Category);
 
 // IIFE
 (async () => {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({force: true });
     await dummyData();
 })();
 
