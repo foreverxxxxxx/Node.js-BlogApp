@@ -85,7 +85,7 @@ exports.get_blog_create = async function(req, res) {
 exports.post_blog_create = async function(req, res) {
     const baslik = req.body.baslik;
     const altbaslik = req.body.altbaslik;
-    const açıklama = req.body.açıklama;
+    const aciklama = req.body.aciklama;
     const resim = req.file.filename;
     const anasayfa = req.body.anasayfa == "on" ? 1:0;
     const onay = req.body.onay == "on"? 1:0;
@@ -95,7 +95,7 @@ exports.post_blog_create = async function(req, res) {
         await Blog.create({
             baslik: baslik,
             altbaslik: altbaslik,
-            açıklama: açıklama,
+            aciklama: aciklama,
             resim: resim,
             anasayfa: anasayfa,
             onay: onay,
@@ -156,7 +156,7 @@ exports.post_blog_edit = async function(req, res) {
     const blogid = req.body.blogid;
     const baslik = req.body.baslik;
     const altbaslik = req.body.altbaslik;
-    const açıklama = req.body.açıklama;
+    const aciklama = req.body.aciklama;
     let resim = req.body.resim;
 
     if(req.file) {
@@ -176,7 +176,7 @@ exports.post_blog_edit = async function(req, res) {
         if(blog) {
             blog.baslik = baslik;
             blog.altbaslik = altbaslik;
-            blog.açıklama = açıklama;
+            blog.aciklama = aciklama;
             blog.resim = resim;
             blog.anasayfa = anasayfa;
             blog.onay = onay;
@@ -235,7 +235,13 @@ exports.post_category_edit = async function(req, res) {
 
 exports.get_blogs = async function(req, res) {
     try {
-        const blogs = await Blog.findAll({ attributes: ["id","baslik","altbaslik","resim"] });
+        const blogs = await Blog.findAll({ 
+            attributes: ["id","baslik","altbaslik","resim"],
+            include: {
+                model: Category,
+                attributes: ["name"]
+            } 
+        });
         res.render("admin/blog-list", {
             title: "blog list",
             blogs: blogs,
