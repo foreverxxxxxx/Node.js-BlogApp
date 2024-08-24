@@ -52,7 +52,14 @@ async function populate() {
 
       await blogs[0].addCategory(categories[1]);
 
-      
+      await categories[0].createBlog({
+        baslik: "Yeni Blog",
+        altbaslik: "Sıfırdan ileri seviyeye 'Web Geliştirme': Html, Css, Sass, Flexbox, Bootstrap, Javascript, Angular, JQuery, Asp.Net Mvc&Core Mvc",
+        açıklama: "Web geliştirme komple bir web sitesinin hem web tasarım (html,css,javascript), hem de web programlama (asp.net mvc) konularının kullanılarak geliştirilmesidir. Sadece html css kullanarak statik bir site tasarlayabiliriz ancak işin içine bir web programlama dilini de katarsak dinamik bir web uygulaması geliştirmiş oluruz.",
+        resim: "1.jpeg",
+        anasayfa: true,
+        onay: true
+      })
     }
 
 }
