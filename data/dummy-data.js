@@ -12,7 +12,7 @@ async function populate() {
             { name: "Programlama" }
         ]);
 
-     const blog=  await Blog.bulkCreate([
+     const blogs=  await Blog.bulkCreate([
         {
              baslik: "Komple Uygulamalı Web Geliştirme Eğitimi",
             altbaslik: "Sıfırdan ileri seviyeye 'Web Geliştirme': Html, Css, Sass, Flexbox, Bootstrap, Javascript, Angular, JQuery, Asp.Net Mvc&Core Mvc",
@@ -47,7 +47,8 @@ async function populate() {
         }
         
        ]);
-      
+      await  categories[0].addBlog(blogs[0]);
+      await  categories[0].addBlog(blogs[1]);
     }
 
 }
