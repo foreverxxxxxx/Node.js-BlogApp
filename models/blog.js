@@ -10,7 +10,7 @@ const Blog = sequelize.define("blog", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    aciklama: {
+    açıklama: {
         type: DataTypes.TEXT,
         allowNull: true
     },
@@ -26,6 +26,8 @@ const Blog = sequelize.define("blog", {
         type: DataTypes.BOOLEAN,
         allowNull: false
     }
+},{
+    timestamps:true
 });
 
 module.exports = Blog;
