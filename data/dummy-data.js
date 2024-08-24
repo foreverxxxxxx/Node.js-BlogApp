@@ -49,6 +49,10 @@ async function populate() {
        ]);
       await  categories[0].addBlog(blogs[0]);
       await  categories[0].addBlog(blogs[1]);
+
+      await blogs[0].addCategory(categories[1]);
+
+      
     }
 
 }
