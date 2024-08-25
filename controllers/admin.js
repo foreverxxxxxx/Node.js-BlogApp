@@ -134,7 +134,15 @@ exports.get_blog_edit = async function(req, res) {
     const blogid = req.params.blogid;
 
     try {
-        const blog = await Blog.findByPk(blogid);
+        const blog = await Blog.findOne({
+            where: {
+                id: blogid
+            },
+            include: {
+                model: Category,
+                attributes: ["id"]
+            }
+        });
         const categories = await Category.findAll();
 
         if(blog) {
