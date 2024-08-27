@@ -1,6 +1,7 @@
 const Blog = require("../models/blog");
 const Category = require("../models/category");
 const { Op } = require("sequelize");
+const sequelize = require("../data/db");
 
 const fs = require("fs");
 
@@ -86,7 +87,7 @@ exports.get_blog_create = async function(req, res) {
 exports.post_blog_create = async function(req, res) {
     const baslik = req.body.baslik;
     const altbaslik = req.body.altbaslik;
-    const aciklama = req.body.aciklama;
+    const açıklama = req.body.açıklama;
     const resim = req.file.filename;
     const anasayfa = req.body.anasayfa == "on" ? 1:0;
     const onay = req.body.onay == "on"? 1:0;
@@ -96,7 +97,7 @@ exports.post_blog_create = async function(req, res) {
         await Blog.create({
             baslik: baslik,
             altbaslik: altbaslik,
-            aciklama: aciklama,
+            açıklama: açıklama,
             resim: resim,
             anasayfa: anasayfa,
             onay: onay,
@@ -165,7 +166,7 @@ exports.post_blog_edit = async function(req, res) {
     const blogid = req.body.blogid;
     const baslik = req.body.baslik;
     const altbaslik = req.body.altbaslik;
-    const aciklama = req.body.aciklama;
+    const açıklama = req.body.açıklama;
     const kategoriIds = req.body.categories;
 
     let resim = req.body.resim;
@@ -194,7 +195,7 @@ exports.post_blog_edit = async function(req, res) {
         if(blog) {
             blog.baslik = baslik;
             blog.altbaslik = altbaslik;
-            blog.aciklama = aciklama;
+            blog.açıklama = açıklama;
             blog.resim = resim;
             blog.anasayfa = anasayfa;
             blog.onay = onay;
@@ -221,6 +222,14 @@ exports.post_blog_edit = async function(req, res) {
     catch(err) {
         console.log(err);
     }
+}
+
+exports.get_category_remove = async function(req, res) {
+    const blogid = req.body.blogid;
+    const categoryid = req.body.categoryid;
+
+    await sequelize.query(`delete from blogCategories where blogId=${blogid} and categoryId=${categoryid}`);
+    res.redirect("/admin/categories/" + categoryid);
 }
 
 exports.get_category_edit = async function(req, res) {
